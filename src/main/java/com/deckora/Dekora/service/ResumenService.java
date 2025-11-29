@@ -6,9 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.deckora.Dekora.model.Categoria;
+import com.deckora.Dekora.model.Resumen;
 import com.deckora.Dekora.repository.CartaRepository;
-import com.deckora.Dekora.repository.CategoriaRepository;
+import com.deckora.Dekora.repository.CarpetaRepository;
+import com.deckora.Dekora.repository.UsuarioRepository;
+import com.deckora.Dekora.repository.ResumenRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -17,27 +19,34 @@ import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class CategoriaService {
+public class ResumenService {
 
     @Autowired
-    private CategoriaRepository categoriaRepo;
+    private ResumenRepository resumenRepo;
     
     @Autowired
     private CartaRepository cartaRepo;
 
-    public List<Categoria> findAll(){
-        return categoriaRepo.findAll();
+    @Autowired
+    private CarpetaRepository carpetaRepo;
+
+    @Autowired
+    private UsuarioRepository usuarioRepo;
+
+    public List<Resumen> findAll(){
+        return resumenRepo.findAll();
     }
 
-    public Categoria findById(Long id){
-        return categoriaRepo.findById(id).get();
+    public Resumen findById(Long id){
+        return resumenRepo.findById(id).get();
     }
 
-    public Categoria save(Categoria categoria){
-        return categoriaRepo.save(categoria);
+    public Resumen save(Resumen resumen){
+        return resumenRepo.save(resumen);
     }
 
-    public void delete(Long id) {
+    //Delete
+/*     public void delete(Long id) {
 
         Categoria categoria = categoriaRepo.findById(id)
             .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
@@ -48,9 +57,10 @@ public class CategoriaService {
 
         // Borrar la categoría
         categoriaRepo.delete(categoria);
-    }
+    } */
     
-    public Categoria patchCategoria(Long id, Categoria parcialCategoria){
+    //Patch
+/*     public Categoria patchCategoria(Long id, Categoria parcialCategoria){
         Optional<Categoria> categoriaOpcional = categoriaRepo.findById(id);
         if (categoriaOpcional.isPresent()) {
             
@@ -63,7 +73,7 @@ public class CategoriaService {
         } else {
             return null;
         }
-    }
+    } */
 
 
 }

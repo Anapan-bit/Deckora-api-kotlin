@@ -90,7 +90,7 @@ public class CartaController {
         return ResponseEntity.ok(cartaAssembler.toModel(updateCarta));
     }
 
-    //Patch carta
+/*     //Patch carta
     @PatchMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(summary = "Este método puede modificar un campo en específico en una carta", description = "A través de un id, este método actualiza una carta, este método actualiza solo el atributo que nosotros queremos modificar")
     public ResponseEntity<EntityModel<Carta>> patchCarta(@Parameter(description = "Id del carta", required = true, example = "1")@PathVariable Long id, @Parameter(description = "Campo a modificar", required = true)@RequestBody Carta parcialCarta){
@@ -111,5 +111,5 @@ public class CartaController {
         }
         cartaService.delete(id);
         return ResponseEntity.noContent().build();
-    }
-}
+    }*/
+} 

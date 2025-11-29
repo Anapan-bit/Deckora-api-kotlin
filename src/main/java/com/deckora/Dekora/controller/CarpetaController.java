@@ -102,7 +102,7 @@ public class CarpetaController {
     }
     
     //delete carpeta
-    @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+/*     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(summary = "Este método puede eliminar una carpeta", description = "Elimina la carpeta especificada por el id")
     public ResponseEntity<Void> deleteCarpeta(@Parameter(description = "Id del carpeta", required = true, example = "1")@PathVariable Long id) {
         Carpeta carpetaExistente = carpetaService.findById(id);
@@ -111,5 +111,5 @@ public class CarpetaController {
         }
         carpetaService.delete(id);
         return ResponseEntity.noContent().build();
-    }
+    } */
 }

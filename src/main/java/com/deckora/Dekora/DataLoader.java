@@ -4,8 +4,10 @@ import com.deckora.Dekora.model.Categoria;
 import com.deckora.Dekora.model.Carpeta;
 import com.deckora.Dekora.model.Carta;
 import com.deckora.Dekora.model.Usuario;
+import com.deckora.Dekora.model.Resumen;
 
 import com.deckora.Dekora.repository.CategoriaRepository;
+import com.deckora.Dekora.repository.ResumenRepository;
 import com.deckora.Dekora.repository.CarpetaRepository;
 import com.deckora.Dekora.repository.CartaRepository;
 import com.deckora.Dekora.repository.UsuarioRepository;
@@ -32,6 +34,8 @@ public class DataLoader implements CommandLineRunner {
     private CarpetaRepository carpetaRepo;
     @Autowired
     private UsuarioRepository usuarioRepo;
+    @Autowired
+    private ResumenRepository resumenRepo;
 
     @Override
     public void run(String... args) throws Exception {
@@ -39,7 +43,9 @@ public class DataLoader implements CommandLineRunner {
         Faker faker = new Faker();
         Random random = new Random();
 
-        //Categorias
+        /* =============================
+           CATEGORÍAS
+        ============================== */
         List<Categoria> categorias = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
@@ -49,80 +55,83 @@ public class DataLoader implements CommandLineRunner {
             categorias.add(categoria);
         }
 
-
-        //Usuarios
+        /* =============================
+           USUARIOS
+        ============================== */
         List<Usuario> usuarios = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
             Usuario usuario = new Usuario();
-            usuario.setContrasenia_usuario(faker.leagueOfLegends().champion());
+            usuario.setContrasenia_usuario(faker.internet().password());
             usuario.setNombre_usuario(faker.name().firstName());
             usuario.setApellido_usuario(faker.name().lastName());
             usuario.setCorreo_usuario(faker.internet().emailAddress());
-            usuario.setNumero_telefono(Integer.parseInt(faker.number().digits(9)));
-
+            usuario.setNumero_telefono(faker.number().numberBetween(600000000, 799999999));
 
             usuarioRepo.save(usuario);
             usuarios.add(usuario);
         }
 
-        //Carpetas
+        /* =============================
+           CARPETAS
+        ============================== */
         List<Carpeta> carpetas = new ArrayList<>();
 
         for (Usuario u : usuarios) {
 
-            // cada usuario tendrá 1 a 3 carpetas
-            int cantidadCarpetas = random.nextInt(3) + 1;
+            int cantidadCarpetas = random.nextInt(3) + 1; // 1–3 carpetas por usuario
 
             for (int i = 0; i < cantidadCarpetas; i++) {
 
                 Carpeta carpeta = new Carpeta();
                 carpeta.setNombre_carpeta("Carpeta " + faker.word().noun());
-                carpeta.setUsuario(u);
-
                 carpetaRepo.save(carpeta);
+
                 carpetas.add(carpeta);
             }
         }
 
-        //Cartas
+        /* =============================
+           CARTAS
+        ============================== */
+        List<Carta> cartas = new ArrayList<>();
+
         for (int i = 0; i < 12; i++) {
 
             Carta carta = new Carta();
-
-            // Campos obligatorios según tu entidad
             carta.setNombre_carta(faker.book().title());
             carta.setEstado(faker.options().option("NM", "EX", "VG", "G"));
-            carta.setDescripcion(faker.leagueOfLegends().champion());
-            carta.setImagen_url(faker.internet().image()); // URL falsa válida
+            carta.setDescripcion(faker.lorem().sentence());
+            carta.setImagen_url(faker.internet().image());
 
-            // asignar categoría random
+            // categoría
             Categoria categoriaRandom = categorias.get(random.nextInt(categorias.size()));
             carta.setCategoria(categoriaRandom);
 
-            // asignar carpetas random (1 o 2)
-            List<Carpeta> carpetasAsignadas = new ArrayList<>();
-
-            int carpetasParaAsignar = random.nextInt(2) + 1;
-
-            for (int j = 0; j < carpetasParaAsignar; j++) {
-                Carpeta carpetaRandom = carpetas.get(random.nextInt(carpetas.size()));
-                if (!carpetasAsignadas.contains(carpetaRandom)) {
-                    carpetasAsignadas.add(carpetaRandom);
-                }
-            }
-
-            carta.setCarpetas(carpetasAsignadas);
             cartaRepo.save(carta);
-
-            // actualizar la relación inversa en Carpeta (ManyToMany)
-            for (Carpeta c : carpetasAsignadas) {
-                if (c.getCartas() == null)
-                    c.setCartas(new ArrayList<>());
-                c.getCartas().add(carta);
-                carpetaRepo.save(c);
-            }
+            cartas.add(carta);
         }
 
+        /* =============================
+           RESÚMENES (NEXO)
+        ============================== */
+
+        // se generan 20 resúmenes aleatorios conectando usuario - carta - carpeta
+        for (int i = 0; i < 20; i++) {
+
+            Resumen resumen = new Resumen();
+
+            Usuario u = usuarios.get(random.nextInt(usuarios.size()));
+            Carpeta ca = carpetas.get(random.nextInt(carpetas.size()));
+            Carta ct = cartas.get(random.nextInt(cartas.size()));
+
+            resumen.setUsuario(u);
+            resumen.setCarpeta(ca);
+            resumen.setCarta(ct);
+
+            resumenRepo.save(resumen);
+        }
+
+        System.out.println("✔ DataLoader ejecutado correctamente con relaciones actualizadas.");
     }
 }

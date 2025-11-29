@@ -21,8 +21,8 @@ public class UsuarioModelAssembler implements RepresentationModelAssembler<Usuar
             linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios"),
             linkTo(methodOn(UsuarioController.class).createUsuario(usuario)).withRel("crear_usuario"),
             linkTo(methodOn(UsuarioController.class).updateUsuario(Long.valueOf(usuario.getId()),usuario)).withRel("actualizar_usuario"),
-            linkTo(methodOn(UsuarioController.class).patchUsuario(Long.valueOf(usuario.getId()), usuario)).withRel("patch_usuario"),
-            linkTo(methodOn(UsuarioController.class).deleteUsuario(Long.valueOf(usuario.getId()))).withRel("eliminar_usuario")
+            linkTo(methodOn(UsuarioController.class).patchUsuario(Long.valueOf(usuario.getId()), usuario)).withRel("patch_usuario")
+            /* linkTo(methodOn(UsuarioController.class).deleteUsuario(Long.valueOf(usuario.getId()))).withRel("eliminar_usuario") */
             );
     }
 }

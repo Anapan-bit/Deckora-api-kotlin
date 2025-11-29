@@ -6,13 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.deckora.Dekora.model.Carta;
-import com.deckora.Dekora.model.Categoria;
-import com.deckora.Dekora.model.Usuario;
 import com.deckora.Dekora.model.Carpeta;
 import com.deckora.Dekora.repository.CarpetaRepository;
 import com.deckora.Dekora.repository.CartaRepository;
-import com.deckora.Dekora.repository.CategoriaRepository;
 import com.deckora.Dekora.repository.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
@@ -45,7 +41,24 @@ public class CarpetaService {
         return carpetaRepo.save(carpeta);
     }
 
-    public void delete(Long id) {
+    public Carpeta patchCarpeta(Long id, Carpeta parcialCarpeta){
+        Optional<Carpeta> carpetaOpcional = carpetaRepo.findById(id);
+        if (carpetaOpcional.isPresent()) {
+            
+            Carpeta carpetaActualizar = carpetaOpcional.get();
+            
+            if (parcialCarpeta.getNombre_carpeta() != null) {
+                carpetaActualizar.setNombre_carpeta(parcialCarpeta.getNombre_carpeta());
+            }
+            return carpetaRepo.save(carpetaActualizar);
+        } else {
+            return null;
+        }
+
+    }
+
+    //Delete (arreglar)
+/*         public void delete(Long id) {
 
         Carpeta carpeta = carpetaRepo.findById(id)
             .orElseThrow(() -> new RuntimeException("Carpeta no encontrada"));
@@ -62,23 +75,7 @@ public class CarpetaService {
         }
         
         carpetaRepo.delete(carpeta);
-    }
-
-    public Carpeta patchCarpeta(Long id, Carpeta parcialCarpeta){
-        Optional<Carpeta> carpetaOpcional = carpetaRepo.findById(id);
-        if (carpetaOpcional.isPresent()) {
-            
-            Carpeta carpetaActualizar = carpetaOpcional.get();
-            
-            if (parcialCarpeta.getNombre_carpeta() != null) {
-                carpetaActualizar.setNombre_carpeta(parcialCarpeta.getNombre_carpeta());
-            }
-            return carpetaRepo.save(carpetaActualizar);
-        } else {
-            return null;
-        }
-
-    }
+    } */
 
 
 }

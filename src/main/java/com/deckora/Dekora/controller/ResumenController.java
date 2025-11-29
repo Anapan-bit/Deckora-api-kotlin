@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.deckora.Dekora.assemblers.UsuarioModelAssembler;
-import com.deckora.Dekora.model.Usuario;
-import com.deckora.Dekora.service.UsuarioService;
+import com.deckora.Dekora.assemblers.ResumenModelAssembler;
+import com.deckora.Dekora.model.Resumen;
+import com.deckora.Dekora.service.ResumenService;
+
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -31,66 +32,64 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @RestController
-@RequestMapping("/api/v2/usuarios")
-//tag es para dar el titulo en el swagger de la usuarios
-@Tag(name = "Usuarios", description = "Operaciones relacionadas con la creacion, modificación y eliminación de las usuarios.")
-public class UsuarioController {
+@RequestMapping("/api/v2/resumenes")
+//tag es para dar el titulo en el swagger de los resumenes
+@Tag(name = "resumenes", description = "Operaciones relacionadas con la creacion, modificación y eliminación de los resumenes.")
+public class ResumenController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private ResumenService resumenService;
 
     @Autowired
-    private UsuarioModelAssembler usuarioAssembler;
+    private ResumenModelAssembler resumenAssembler;
 
-    //get de todos las usuarios
+    //get de todos las resumenes
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    //operation es para el resumen de lo que hace
-    //paramater es para describir el tipo de dato esperado
-    @Operation(summary = "Este método obtiene todas las usuarios", description = "Muestra una lista de todas las usuarios creadas")
-    public ResponseEntity<CollectionModel<EntityModel<Usuario>>> getAllUsuarios(){
-        List <EntityModel<Usuario>> listaUsuarios = usuarioService.findAll().stream()
-                .map(usuarioAssembler::toModel)
+    @Operation(summary = "Este método obtiene todas las resumenes", description = "Muestra una lista de todas los resumenes creadas")
+    public ResponseEntity<CollectionModel<EntityModel<Resumen>>> getAllResumenes(){
+        List <EntityModel<Resumen>> listaResumen = resumenService.findAll().stream()
+                .map(resumenAssembler::toModel)
                 .collect(Collectors.toList());
-        if(listaUsuarios.isEmpty()){
+        if(listaResumen.isEmpty()){
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(CollectionModel.of(
-            listaUsuarios,
-            linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withSelfRel()
+            listaResumen,
+            linkTo(methodOn(ResumenController.class).getAllResumenes()).withSelfRel()
         ));
     }
 
     //get x id
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    @Operation(summary = "Este método obtiene una usuario en específico", description = "A través de un id, este método muestra una usuario en específico")
-    public ResponseEntity<EntityModel<Usuario>> getUsuarioById(@Parameter(description = "Id del usuario", required = true, example = "1")@PathVariable Long id){
-        Usuario usuario = usuarioService.findById(id);
-        if (usuario == null){
+    @Operation(summary = "Este método obtiene un resumen en específico", description = "A través de un id, este método muestra un resumen en específico")
+    public ResponseEntity<EntityModel<Resumen>> getResumenById(@Parameter(description = "Id del resumen", required = true, example = "1")@PathVariable Long id){
+        Resumen resumen = resumenService.findById(id);
+        if (resumen == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(usuarioAssembler.toModel(usuario));
+        return ResponseEntity.ok(resumenAssembler.toModel(resumen));
     }
 
-    //post crear un usuario
+    //post crear un resumen
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    @Operation(summary = "Este método crea una usuario", description = "Crea nueva usuario, enviando un objeto a través de un POST")
-    public ResponseEntity<EntityModel<Usuario>> createUsuario(@Parameter(description = "Detalles del usuario", required = true)@RequestBody Usuario usuario){
-        Usuario newUsuario = usuarioService.save(usuario);
+    @Operation(summary = "Este método crea resumen", description = "Crea nuevo resumen, enviando un objeto a través de un POST")
+    public ResponseEntity<EntityModel<Resumen>> createResumen(@Parameter(description = "Detalles del resumen", required = true)@RequestBody Resumen resumen){
+        Resumen newResumen = resumenService.save(resumen);
         return ResponseEntity
-                .created(linkTo(methodOn(UsuarioController.class).getUsuarioById(Long.valueOf(newUsuario.getId()))).toUri())
-                .body(usuarioAssembler.toModel(newUsuario));
+                .created(linkTo(methodOn(ResumenController.class).getResumenById(Long.valueOf(newResumen.getId()))).toUri())
+                .body(resumenAssembler.toModel(newResumen));
     }
 
     //put para usuario
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    @Operation(summary = "Este método actualiza una usuario", description = "A través de un id, este método actualiza una usuario, pero se deben escribir todos los atributos")
-    public ResponseEntity<EntityModel<Usuario>> updateUsuario(@Parameter(description = "Id del usuario", required = true, example = "1")@PathVariable Long id, @Parameter(description = "Detalles del usuario", required = true)@RequestBody Usuario usuario){
-        usuario.setId(usuario.getId()); //revisar despues
-        Usuario updateUsuario = usuarioService.save(usuario);
-        return ResponseEntity.ok(usuarioAssembler.toModel(updateUsuario));
+    @Operation(summary = "Este método actualiza un resumen", description = "A través de un id, este método actualiza una resumen, pero se deben escribir todos los atributos")
+    public ResponseEntity<EntityModel<Resumen>> updateResumen(@Parameter(description = "Id del resumen", required = true, example = "1")@PathVariable Long id, @Parameter(description = "Detalles del resumen", required = true)@RequestBody Resumen resumen){
+        resumen.setId(resumen.getId()); //revisar despues
+        Resumen updateResumen = resumenService.save(resumen);
+        return ResponseEntity.ok(resumenAssembler.toModel(updateResumen));
     }
 
-    //Patch usuario
+/*     //Patch usuario
     @PatchMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(summary = "Este método puede modificar un campo en específico en una usuario", description = "A través de un id, este método actualiza una usuario, este método actualiza solo el atributo que nosotros queremos modificar")
     public ResponseEntity<EntityModel<Usuario>> patchUsuario(@Parameter(description = "Id del usuario", required = true, example = "1")@PathVariable Long id, @Parameter(description = "Campo a modificar", required = true)@RequestBody Usuario parcialUsuario){
@@ -99,7 +98,7 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(usuarioAssembler.toModel(patched));
-    }
+    } */
     
     //delete usuario
 /*     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)

@@ -43,21 +43,6 @@ public class UsuarioService {
         return usuarioRepo.save(usuario);
     }
 
-    public void delete(Long id) {
-
-        Usuario usuario = usuarioRepo.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        for (Carpeta carpeta : usuario.getCarpetas()) {
-
-            for (Carta carta : carpeta.getCartas()) {
-                cartaRepo.delete(carta);
-            }
-
-            carpetaRepo.delete(carpeta);
-        }
-        usuarioRepo.delete(usuario);
-    }
 
     public Usuario patchUsuario(Long id, Usuario parcialUsuario){
         Optional<Usuario> usuarioOpcional = usuarioRepo.findById(id);
@@ -91,5 +76,23 @@ public class UsuarioService {
         }
 
     }
+
+    // Delete (arreglar)
+    
+/*     public void delete(Long id) {
+
+        Usuario usuario = usuarioRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        for (Carpeta carpeta : usuario.getCarpetas()) {
+
+            for (Carta carta : carpeta.getCartas()) {
+                cartaRepo.delete(carta);
+            }
+
+            carpetaRepo.delete(carpeta);
+        }
+        usuarioRepo.delete(usuario);
+    } */
 
 }
