@@ -21,8 +21,6 @@ public class ResumenModelAssembler implements RepresentationModelAssembler<Resum
             linkTo(methodOn(ResumenController.class).getAllResumenes()).withRel("resumens"),
             linkTo(methodOn(ResumenController.class).createResumen(resumen)).withRel("crear_resumen"),
             linkTo(methodOn(ResumenController.class).updateResumen(Long.valueOf(resumen.getId()),resumen)).withRel("actualizar_resumen")
-/*             linkTo(methodOn(ResumenController.class).patchResumen(Long.valueOf(resumen.getId()), resumen)).withRel("patch_resumen") */
-            /* linkTo(methodOn(ResumenController.class).deleteResumen(Long.valueOf(resumen.getId()))).withRel("eliminar_resumen") */
             );
     }
 }

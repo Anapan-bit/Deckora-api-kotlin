@@ -100,16 +100,4 @@ public class UsuarioController {
         }
         return ResponseEntity.ok(usuarioAssembler.toModel(patched));
     }
-    
-    //delete usuario
-/*     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    @Operation(summary = "Este método puede eliminar una usuario", description = "Elimina la usuario especificada por el id")
-    public ResponseEntity<Void> deleteUsuario(@Parameter(description = "Id del usuario", required = true, example = "1")@PathVariable Long id) {
-        Usuario usuarioExistente = usuarioService.findById(id);
-        if (usuarioExistente == null) {
-            return ResponseEntity.notFound().build();
-        }
-        usuarioService.delete(id);
-        return ResponseEntity.noContent().build();
-    } */
 }

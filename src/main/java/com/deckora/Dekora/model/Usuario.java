@@ -38,9 +38,4 @@ public class Usuario {
 
     @Column(length = 9, nullable = false)
     private Integer numero_telefono;
-
-    //Conexiones
-
-
-
 }
