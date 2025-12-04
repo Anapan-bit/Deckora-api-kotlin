@@ -29,15 +29,5 @@ public class Carpeta {
     @Column(nullable = false, length = 35)
     private String nombre_carpeta;
 
-    @Column(nullable = false)
-    private LocalDate fecha_creacion;
-
-
-
-    //Fecha el dia que es creada
-    @PrePersist
-    protected void onCreate() {
-        this.fecha_creacion = LocalDate.now();
-    }
 
 }

@@ -24,12 +24,12 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepo;
-    
+/*     
     @Autowired
     private CarpetaRepository carpetaRepo;
 
     @Autowired
-    private CartaRepository cartaRepo;
+    private CartaRepository cartaRepo; */
 
     public List<Usuario> findAll(){
         return usuarioRepo.findAll();
@@ -54,20 +54,12 @@ public class UsuarioService {
                 usuatioActualizar.setNombre_usuario(parcialUsuario.getNombre_usuario());
             }
 
-            if (parcialUsuario.getApellido_usuario() != null) {
-                usuatioActualizar.setApellido_usuario(parcialUsuario.getApellido_usuario());
-            }
-
             if (parcialUsuario.getCorreo_usuario() != null) {
                 usuatioActualizar.setCorreo_usuario(parcialUsuario.getCorreo_usuario());
             }
 
             if (parcialUsuario.getContrasenia_usuario() != null) {
                 usuatioActualizar.setContrasenia_usuario(parcialUsuario.getContrasenia_usuario());
-            }
-
-            if (parcialUsuario.getNumero_telefono() != null) {
-                usuatioActualizar.setNumero_telefono(parcialUsuario.getNumero_telefono());
             }
             
             return usuarioRepo.save(usuatioActualizar);

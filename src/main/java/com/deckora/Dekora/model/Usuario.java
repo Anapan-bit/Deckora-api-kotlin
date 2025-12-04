@@ -23,19 +23,14 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 50, nullable = false)
+    private String correo_usuario;
+    
+    @Column(length = 20, nullable = false)
+    private String nombre_usuario;
+
     @Column(length = 20, nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String contrasenia_usuario;
 
-    @Column(length = 50, nullable = false)
-    private String nombre_usuario;
-
-    @Column(length = 50, nullable = false)
-    private String apellido_usuario;
-
-    @Column(length = 50, nullable = false)
-    private String correo_usuario;
-
-    @Column(length = 9, nullable = false)
-    private Integer numero_telefono;
 }
