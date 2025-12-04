@@ -107,7 +107,7 @@ public class UsuarioController {
     @PostMapping(value = "/login", produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(summary = "Login de usuario", description = "Verifica las credenciales y devuelve el usuario si son correctas")
     public ResponseEntity<?> loginUsuario(@Parameter(description = "Credenciales de login", required = true)@RequestBody LoginRequest loginRequest) {
-        Optional<Usuario> usuarioOpcional = usuarioService.findByNombre_usuario(loginRequest.getNombre_usuario());
+        Optional<Usuario> usuarioOpcional = usuarioService.findByNombreUsuario(loginRequest.getNombre_usuario());
 
         if (usuarioOpcional.isPresent()) {
             Usuario usuario = usuarioOpcional.get();

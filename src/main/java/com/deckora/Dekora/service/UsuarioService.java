@@ -70,7 +70,7 @@ public class UsuarioService {
     }
 
     public Usuario login(String nombre_usuario, String contrasenia_usuario) {
-        Optional<Usuario> usuarioOpcional = usuarioRepo.findByNombre_usuario(nombre_usuario);
+        Optional<Usuario> usuarioOpcional = usuarioRepo.findByNombre(nombre_usuario);
 
         if (usuarioOpcional.isPresent()) {
             Usuario usuario = usuarioOpcional.get();
@@ -82,8 +82,8 @@ public class UsuarioService {
         return null; // Usuario no encontrado o contraseña incorrecta
     }
 
-    public Optional<Usuario> findByNombre_usuario(String nombre) {
-        return usuarioRepo.findByNombre_usuario(nombre);
+    public Optional<Usuario> findByNombreUsuario(String nombre) {
+        return usuarioRepo.findByNombre(nombre);
     }
     // Delete (arreglar)
     
