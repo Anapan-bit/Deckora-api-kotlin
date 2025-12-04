@@ -1,11 +1,13 @@
 package com.deckora.Dekora.controller;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.deckora.Dekora.assemblers.UsuarioModelAssembler;
+import com.deckora.Dekora.model.LoginRequest;
 import com.deckora.Dekora.model.Usuario;
 import com.deckora.Dekora.service.UsuarioService;
 
@@ -99,5 +102,25 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(usuarioAssembler.toModel(patched));
+    }
+
+    @PostMapping(value = "/login", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Login de usuario", description = "Verifica las credenciales y devuelve el usuario si son correctas")
+    public ResponseEntity<?> loginUsuario(@Parameter(description = "Credenciales de login", required = true)@RequestBody LoginRequest loginRequest) {
+        Optional<Usuario> usuarioOpcional = usuarioService.findByNombre_usuario(loginRequest.getNombre_usuario());
+
+        if (usuarioOpcional.isPresent()) {
+            Usuario usuario = usuarioOpcional.get();
+            if (usuario.getContrasenia_usuario().equals(loginRequest.getContrasenia_usuario())) {
+                // Devuelve el usuario como EntityModel
+                return ResponseEntity.ok(usuarioAssembler.toModel(usuario));
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                    .body("Contraseña incorrecta");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body("Usuario no encontrado");
+        }
     }
 }

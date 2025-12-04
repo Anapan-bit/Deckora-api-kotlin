@@ -69,6 +69,22 @@ public class UsuarioService {
 
     }
 
+    public Usuario login(String nombre_usuario, String contrasenia_usuario) {
+        Optional<Usuario> usuarioOpcional = usuarioRepo.findByNombre_usuario(nombre_usuario);
+
+        if (usuarioOpcional.isPresent()) {
+            Usuario usuario = usuarioOpcional.get();
+            // Verifica la contraseña
+            if (usuario.getContrasenia_usuario().equals(contrasenia_usuario)) {
+                return usuario;
+            }
+        }
+        return null; // Usuario no encontrado o contraseña incorrecta
+    }
+
+    public Optional<Usuario> findByNombre_usuario(String nombre) {
+        return usuarioRepo.findByNombre_usuario(nombre);
+    }
     // Delete (arreglar)
     
 /*     public void delete(Long id) {
