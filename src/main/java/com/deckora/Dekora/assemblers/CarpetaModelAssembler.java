@@ -19,7 +19,6 @@ public class CarpetaModelAssembler implements RepresentationModelAssembler<Carpe
         return EntityModel.of(carpeta,
             linkTo(methodOn(CarpetaController.class).getCarpetaById(Long.valueOf(carpeta.getId()))).withSelfRel(),
             linkTo(methodOn(CarpetaController.class).getAllCarpetas()).withRel("carpetas"),
-            linkTo(methodOn(CarpetaController.class).createCarpeta(carpeta)).withRel("crear_carpeta"),
             linkTo(methodOn(CarpetaController.class).updateCarpeta(Long.valueOf(carpeta.getId()),carpeta)).withRel("actualizar_carpeta"),
             linkTo(methodOn(CarpetaController.class).patchCarpeta(Long.valueOf(carpeta.getId()), carpeta)).withRel("patch_carpeta")
 /*             linkTo(methodOn(CarpetaController.class).deleteCarpeta(Long.valueOf(carpeta.getId()))).withRel("eliminar_carpeta") */

@@ -19,7 +19,6 @@ public class CartaModelAssembler implements RepresentationModelAssembler<Carta, 
         return EntityModel.of(carta,
             linkTo(methodOn(CartaController.class).getCartaById(Long.valueOf(carta.getId()))).withSelfRel(),
             linkTo(methodOn(CartaController.class).getAllCartas()).withRel("cartas"),
-            linkTo(methodOn(CartaController.class).createCarta(carta)).withRel("crear_carta"),
             linkTo(methodOn(CartaController.class).updateCarta(Long.valueOf(carta.getId()),carta)).withRel("actualizar_carta")
 /*             linkTo(methodOn(CartaController.class).patchCarta(Long.valueOf(carta.getId()), carta)).withRel("patch_carta"),
             linkTo(methodOn(CartaController.class).deleteCarta(Long.valueOf(carta.getId()))).withRel("eliminar_carta") */
